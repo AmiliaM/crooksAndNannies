@@ -1,6 +1,5 @@
 import pygame, random, game, sys
 
-
 #Colors
 black = 0, 0, 0
 white = 255, 255, 255
@@ -19,24 +18,21 @@ def getBabyRect(): return babyrect
 
 #init
 def loadAssets():
-    global player
+    global player, playerrect
     player = pygame.image.load('assets/crook.png').convert_alpha()
     player = pygame.transform.scale(player, (100, 100))
-    global playerrect
     playerrect = player.get_rect()
 
-    global nanny
+    global nanny, nannyrect
     nanny = pygame.image.load('assets/nanny.png').convert_alpha()
     nanny = pygame.transform.scale(nanny, (100, 100))
-    global nannyrect
     nannyrect = nanny.get_rect()
     nannyrect[0] = random.randint(0, screenWidth-100)
     nannyrect[1] = random.randint(0, screenHeight-100)
 
-    global baby
+    global baby, babyrect
     baby = pygame.image.load('assets/baby.png').convert_alpha()
     baby = pygame.transform.scale(baby, (100, 100))
-    global babyrect
     babyrect = baby.get_rect()
     babyrect[0] = screenWidth-100
     babyrect[1] = screenHeight-100
@@ -88,6 +84,22 @@ def gameover():
 def win():
     font = pygame.font.SysFont(None, 48)
     winmessage = font.render('You win', True, red)
+    textrect = winmessage.get_rect()
+    textrect.centerx = screen.get_rect().centerx
+    textrect.centery = screen.get_rect().centery
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                return
+        screen.fill(black)
+        screen.blit(winmessage, textrect)
+        pygame.display.flip()
+
+def menu():
+    font = pygame.font.SysFont(None, 48)
+    winmessage = font.render('Press any key to start', True, red)
     textrect = winmessage.get_rect()
     textrect.centerx = screen.get_rect().centerx
     textrect.centery = screen.get_rect().centery
