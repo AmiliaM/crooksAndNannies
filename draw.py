@@ -4,6 +4,7 @@ import pygame, random, game, sys
 black = 0, 0, 0
 white = 255, 255, 255
 red = 255, 0, 0
+paleBlue = 66, 149, 244
 
 screenWidth, screenHeight = 1280, 800
 
@@ -84,9 +85,14 @@ def gameover():
 def win():
     font = pygame.font.SysFont(None, 48)
     winmessage = font.render('You win', True, red)
+    winsubtitle = font.render(game.getWinMessage(), True, red)
     textrect = winmessage.get_rect()
     textrect.centerx = screen.get_rect().centerx
     textrect.centery = screen.get_rect().centery
+    subrect = winsubtitle.get_rect()
+    subrect.centerx = screen.get_rect().centerx
+    subrect.centery = screen.get_rect().centery
+    subrect[1] -= 100
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -95,22 +101,30 @@ def win():
                 return
         screen.fill(black)
         screen.blit(winmessage, textrect)
+        screen.blit(winsubtitle, subrect)
         pygame.display.flip()
 
 def menu():
     font = pygame.font.SysFont(None, 48)
-    winmessage = font.render('Press any key to start', True, red)
+    winmessage = font.render('Crooks and Nannies', True, [27, 35, 15])
+    startMessage = font.render('start', True, [27, 35, 15])
     textrect = winmessage.get_rect()
     textrect.centerx = screen.get_rect().centerx
     textrect.centery = screen.get_rect().centery
+    startRect = (540, 550, 200, 100)
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 return
-        screen.fill(black)
+            if event.type == pygame.MOUSEBUTTONUP:
+                if pygame.mouse.get_pos()[0] < 805 and pygame.mouse.get_pos()[0] > 605 and pygame.mouse.get_pos()[1] < 675 and pygame.mouse.get_pos()[1] > 575:
+                    return
+        screen.fill(paleBlue)
+        pygame.draw.rect(screen, white, startRect, 0)
         screen.blit(winmessage, textrect)
+        screen.blit(startMessage, (605, 575, 200, 100))
         pygame.display.flip()
 
 #blit

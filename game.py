@@ -1,4 +1,4 @@
-import pygame, sys, draw
+import pygame, sys, draw, random
 
 def processUserInput():
     for event in pygame.event.get():
@@ -18,3 +18,7 @@ def isGameover():
 def isColliding(object1, object2):
     if (object1[0] + object1[2] >= object2[0] and object1[0] <= object2[0] + object2[2]) and (object1[1] + object1[3] >= object2[1] and object1[1] <= object2[1] + object2[3]):
         return True
+
+def getWinMessage():
+    winMessages = "", "Great job, I guess", "Asshole", "So you get pleasure from stealing babies?"
+    return winMessages[random.randint(0, len(winMessages))]
