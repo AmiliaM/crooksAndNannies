@@ -5,6 +5,7 @@ def main():
     print("good morning")
     while 1:
         game.processUserInput()
+        draw.moveNanny()
         if game.isGameWon(): draw.win()
         if game.isGameover(): draw.gameover()
         draw.render()

@@ -1,4 +1,4 @@
-import pygame, random, game
+import pygame, random, game, sys
 
 
 #Colors
@@ -8,13 +8,13 @@ red = 255, 0, 0
 
 screenWidth, screenHeight = 1280, 800
 
+nannyaccelx = 1
+nannyaccely = 1
+
 #Getters
 def getRes(): return screenWidth, screenHeight
-
 def getPlayerRect(): return playerrect
-
 def getNannyRect(): return nannyrect
-
 def getBabyRect(): return babyrect
 
 #init
@@ -60,7 +60,13 @@ def movePlayer(keyPressed):
 
 
 def moveNanny():
-    pass
+    global nannyaccelx, nannyaccely
+    if nannyrect[0] < 100 or nannyrect[0] > screenWidth - 200:
+        nannyaccelx *= -1
+    if nannyrect[1] < 100 or nannyrect[1] > screenHeight -200:
+        nannyaccely *= -1
+    nannyrect[0] += nannyaccelx
+    nannyrect[1] += nannyaccely
 
 #game states
 def gameover():
