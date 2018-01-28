@@ -2,11 +2,11 @@ import pygame, draw
 
 def init():
     #init variables
-    screenWidth, screenHeight = 700, 400
-
+    res = draw.getRes()
+    
     #init
     pygame.init()
     print("pygame init")
-    draw.setupScreen(screenWidth, screenHeight)
+    draw.setupScreen(res)
     draw.loadAssets()
     print("screen init")
