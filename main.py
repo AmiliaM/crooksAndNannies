@@ -1,4 +1,4 @@
-import pygame, init, draw, game, sys
+import pygame, init, draw, game, sys, atexit
 
 def main():
     init.init()
@@ -18,4 +18,5 @@ def main():
 
 
 if __name__ == "__main__":
+    atexit.register(lambda: print("good night"))
     main()

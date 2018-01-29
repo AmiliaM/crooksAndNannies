@@ -8,13 +8,13 @@ paleBlue = 66, 149, 244
 
 screenWidth, screenHeight = 1280, 800
 
-nannyaccelx = 1
-nannyaccely = 1
+
+nannyaccel = []
 
 #Getters
 def getRes(): return screenWidth, screenHeight
 def getPlayerRect(): return playerrect
-def getNannyRect(): return nannyrect
+def getNannyRect(): return nannyrects
 def getBabyRect(): return babyrect
 
 #init
@@ -24,12 +24,18 @@ def loadAssets():
     player = pygame.transform.scale(player, (100, 100))
     playerrect = player.get_rect()
 
-    global nanny, nannyrect
+    global nanny, nannyrects
+    nannyrects = []
     nanny = pygame.image.load('assets/nanny.png').convert_alpha()
     nanny = pygame.transform.scale(nanny, (100, 100))
-    nannyrect = nanny.get_rect()
-    nannyrect[0] = random.randint(0, screenWidth-100)
-    nannyrect[1] = random.randint(0, screenHeight-100)
+    global nanniesNumber
+    nanniesNumber = random.randint(1, 3)
+    for i in range(0, nanniesNumber):
+        rect = nanny.get_rect()
+        rect[0] = random.randint(0, screenWidth-100)
+        rect[1] = random.randint(0, screenHeight-100)
+        nannyrects.append(rect)
+        nannyaccel.append([1, 1])
 
     global baby, babyrect
     baby = pygame.image.load('assets/baby.png').convert_alpha()
@@ -57,13 +63,19 @@ def movePlayer(keyPressed):
 
 
 def moveNanny():
-    global nannyaccelx, nannyaccely
-    if nannyrect[0] < 100 or nannyrect[0] > screenWidth - 200:
-        nannyaccelx *= -1
-    if nannyrect[1] < 100 or nannyrect[1] > screenHeight -200:
-        nannyaccely *= -1
-    nannyrect[0] += nannyaccelx
-    nannyrect[1] += nannyaccely
+    global nannyrects, nannyaccel
+    
+    for i in range(0, nanniesNumber):
+        rect = nannyrects[i]
+
+        if rect[0] < 100 or rect[0] > screenWidth - 200:
+            nannyaccel[i][0] *= -1
+        if rect[1] < 100 or rect[1] > screenHeight -200:
+            nannyaccel[i][1] *= -1
+        rect[0] += nannyaccel[i][0]
+        rect[1] += nannyaccel[i][1]
+        nannyrects[i] = rect
+        print(rect)
 
 #game states
 def gameover():
@@ -72,33 +84,41 @@ def gameover():
     textrect = deathmessage.get_rect()
     textrect.centerx = screen.get_rect().centerx
     textrect.centery = screen.get_rect().centery
+    losesubtitle = font.render(game.getGameoverMessage(), True, red)
+    subrect = losesubtitle.get_rect()
+    subrect.centerx = screen.get_rect().centerx
+    subrect.centery = screen.get_rect().centery
+    subrect[1] += 100
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                return
+                if event.key == pygame.K_SPACE:
+                    return
         screen.fill(black)
         screen.blit(deathmessage, textrect)
+        screen.blit(losesubtitle, subrect)
         pygame.display.flip()
 
 def win():
     font = pygame.font.SysFont(None, 48)
     winmessage = font.render('You win', True, red)
-    winsubtitle = font.render(game.getWinMessage(), True, red)
     textrect = winmessage.get_rect()
     textrect.centerx = screen.get_rect().centerx
     textrect.centery = screen.get_rect().centery
+    winsubtitle = font.render(game.getWinMessage(), True, red)
     subrect = winsubtitle.get_rect()
     subrect.centerx = screen.get_rect().centerx
     subrect.centery = screen.get_rect().centery
-    subrect[1] -= 100
+    subrect[1] += 100
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                return
+                if event.key == pygame.K_SPACE:
+                    return
         screen.fill(black)
         screen.blit(winmessage, textrect)
         screen.blit(winsubtitle, subrect)
@@ -131,6 +151,6 @@ def menu():
 def render():
      screen.fill(white)
      screen.blit(player, playerrect)
-     screen.blit(nanny, nannyrect)
+     for i in range(0, nanniesNumber): screen.blit(nanny, nannyrects[i])
      screen.blit(baby, babyrect)
      pygame.display.flip()
