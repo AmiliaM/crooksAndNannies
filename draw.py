@@ -29,7 +29,7 @@ def loadAssets():
     nanny = pygame.image.load('assets/nanny.png').convert_alpha()
     nanny = pygame.transform.scale(nanny, (100, 100))
     global nanniesNumber
-    nanniesNumber = random.randint(1, 3)
+    nanniesNumber = random.randint(1, 5)
     for i in range(0, nanniesNumber):
         rect = nanny.get_rect()
         rect[0] = random.randint(0, screenWidth-100)
