@@ -10,3 +10,4 @@ def init():
     draw.setupScreen(res)
     draw.loadAssets()
     print("screen init")
+    pygame.mouse.set_visible(1)

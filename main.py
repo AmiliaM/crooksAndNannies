@@ -1,8 +1,14 @@
 import pygame, init, draw, game, sys, atexit
 
+tutorialShown = False
+
 def main():
+    global tutorialShown
     init.init()
     print("good morning")
+    if not tutorialShown:
+        draw.tutorial()
+        tutorialShown = True
     draw.menu()
     while 1:
         game.processUserInput()
